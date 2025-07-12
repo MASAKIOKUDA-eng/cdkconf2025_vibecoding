@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Network Diagnostics Architecture</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: white;
+            padding: 20px;
+        }
+        pre {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .legend {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .legend ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .legend li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Network Diagnostics Architecture</h1>
+        <pre>+----------------+     +-------------+     +----------------+
+|                |     |             |     |                |
+|   CloudFront   +---->+  S3 Bucket  |     |  API Gateway   |
+|  Distribution  |     |  (WebApp)   |     |                |
+|                |     |             |     +-------+--------+
++----------------+     +-------------+             |
+                                                   v
+                                          +--------+---------+
+                                          |                  |
+                                          | Lambda Function  |
+                                          | (Bedrock Client) |
+                                          |                  |
+                                          +--------+---------+
+                                                   |
+                       +-------------+             |
+                       |             |<------------+
+                       | DynamoDB    |             |
+                       |             |             |
+                       +-------------+             v
+                                              +----+----+
+                                              |         |
+                                              | S3      |
+                                              | Results |
+                                              |         |
+                                              +---------+</pre>
+        
+        <div class="legend">
+            <h3>Legend:</h3>
+            <ul>
+                <li><strong>CloudFront Distribution</strong>: Delivers web application to users</li>
+                <li><strong>S3 Bucket (WebApp)</strong>: Hosts the static web application files</li>
+                <li><strong>API Gateway</strong>: Provides REST API endpoints</li>
+                <li><strong>Lambda Function</strong>: Analyzes network configurations using Amazon Bedrock</li>
+                <li><strong>DynamoDB</strong>: Stores network configurations and analysis results</li>
+                <li><strong>S3 Results</strong>: Stores detailed analysis results and diagrams</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

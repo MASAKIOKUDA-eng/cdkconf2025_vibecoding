@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="white"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" font-family="Arial" font-size="20" text-anchor="middle" font-weight="bold">Network Diagnostics Architecture</text>
+  
+  <!-- CloudFront -->
+  <rect x="100" y="100" width="120" height="80" rx="5" ry="5" fill="#FF9900" stroke="black" stroke-width="2"/>
+  <text x="160" y="145" font-family="Arial" font-size="14" text-anchor="middle">CloudFront</text>
+  <text x="160" y="165" font-family="Arial" font-size="12" text-anchor="middle">Distribution</text>
+  
+  <!-- S3 WebApp -->
+  <rect x="340" y="100" width="120" height="80" rx="5" ry="5" fill="#3F8624" stroke="black" stroke-width="2"/>
+  <text x="400" y="145" font-family="Arial" font-size="14" text-anchor="middle">S3 Bucket</text>
+  <text x="400" y="165" font-family="Arial" font-size="12" text-anchor="middle">(WebApp)</text>
+  
+  <!-- API Gateway -->
+  <rect x="580" y="100" width="120" height="80" rx="5" ry="5" fill="#8C4FFF" stroke="black" stroke-width="2"/>
+  <text x="640" y="145" font-family="Arial" font-size="14" text-anchor="middle">API Gateway</text>
+  
+  <!-- Lambda -->
+  <rect x="580" y="250" width="120" height="80" rx="5" ry="5" fill="#FF9900" stroke="black" stroke-width="2"/>
+  <text x="640" y="280" font-family="Arial" font-size="14" text-anchor="middle">Lambda Function</text>
+  <text x="640" y="300" font-family="Arial" font-size="12" text-anchor="middle">(Bedrock Client)</text>
+  
+  <!-- DynamoDB -->
+  <rect x="340" y="400" width="120" height="80" rx="5" ry="5" fill="#3B48CC" stroke="black" stroke-width="2"/>
+  <text x="400" y="445" font-family="Arial" font-size="14" text-anchor="middle">DynamoDB</text>
+  
+  <!-- S3 Results -->
+  <rect x="580" y="400" width="120" height="80" rx="5" ry="5" fill="#3F8624" stroke="black" stroke-width="2"/>
+  <text x="640" y="435" font-family="Arial" font-size="14" text-anchor="middle">S3 Bucket</text>
+  <text x="640" y="455" font-family="Arial" font-size="12" text-anchor="middle">(Results)</text>
+  
+  <!-- Amazon Bedrock -->
+  <rect x="700" y="325" width="80" height="30" rx="5" ry="5" fill="#232F3E" stroke="black" stroke-width="1"/>
+  <text x="740" y="345" font-family="Arial" font-size="10" text-anchor="middle" fill="white">Amazon Bedrock</text>
+  
+  <!-- Connections -->
+  <!-- CloudFront to S3 WebApp -->
+  <line x1="220" y1="140" x2="340" y2="140" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="280" y="130" font-family="Arial" font-size="10" text-anchor="middle">Static Content</text>
+  
+  <!-- S3 WebApp to API Gateway (dashed) -->
+  <line x1="460" y1="140" x2="580" y2="140" stroke="black" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="520" y="130" font-family="Arial" font-size="10" text-anchor="middle">API Calls</text>
+  
+  <!-- API Gateway to Lambda -->
+  <line x1="640" y1="180" x2="640" y2="250" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="660" y="215" font-family="Arial" font-size="10" text-anchor="middle">REST API</text>
+  
+  <!-- Lambda to DynamoDB -->
+  <line x1="580" y1="290" x2="460" y2="400" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="500" y="330" font-family="Arial" font-size="10" text-anchor="middle">Store Data</text>
+  
+  <!-- Lambda to S3 Results -->
+  <line x1="640" y1="330" x2="640" y2="400" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="660" y="365" font-family="Arial" font-size="10" text-anchor="middle">Store Results</text>
+  
+  <!-- Lambda to Amazon Bedrock -->
+  <line x1="700" y1="290" x2="720" y2="325" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="730" y="310" font-family="Arial" font-size="10" text-anchor="middle">InvokeModel</text>
+  
+  <!-- User -->
+  <circle cx="40" cy="140" r="15" fill="#DDDDDD" stroke="black" stroke-width="1"/>
+  <line x1="40" y1="155" x2="40" y2="185" stroke="black" stroke-width="1"/>
+  <line x1="20" y1="165" x2="60" y2="165" stroke="black" stroke-width="1"/>
+  <line x1="40" y1="185" x2="20" y2="215" stroke="black" stroke-width="1"/>
+  <line x1="40" y1="185" x2="60" y2="215" stroke="black" stroke-width="1"/>
+  <text x="40" y="235" font-family="Arial" font-size="12" text-anchor="middle">User</text>
+  
+  <!-- User to CloudFront -->
+  <line x1="60" y1="140" x2="100" y2="140" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="80" y="130" font-family="Arial" font-size="10" text-anchor="middle">HTTPS</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="black"/>
+    </marker>
+  </defs>
+  
+  <!-- Legend -->
+  <rect x="50" y="500" width="700" height="80" rx="5" ry="5" fill="#F8F8F8" stroke="#DDDDDD" stroke-width="1"/>
+  <text x="400" y="520" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Legend</text>
+  
+  <rect x="70" y="530" width="15" height="15" fill="#FF9900" stroke="black" stroke-width="1"/>
+  <text x="95" y="543" font-family="Arial" font-size="12" text-anchor="start">AWS Compute (CloudFront, Lambda)</text>
+  
+  <rect x="270" y="530" width="15" height="15" fill="#3F8624" stroke="black" stroke-width="1"/>
+  <text x="295" y="543" font-family="Arial" font-size="12" text-anchor="start">AWS Storage (S3)</text>
+  
+  <rect x="470" y="530" width="15" height="15" fill="#8C4FFF" stroke="black" stroke-width="1"/>
+  <text x="495" y="543" font-family="Arial" font-size="12" text-anchor="start">AWS API Services</text>
+  
+  <rect x="470" y="560" width="15" height="15" fill="#3B48CC" stroke="black" stroke-width="1"/>
+  <text x="495" y="573" font-family="Arial" font-size="12" text-anchor="start">AWS Database</text>
+  
+  <rect x="70" y="560" width="15" height="15" fill="#232F3E" stroke="black" stroke-width="1"/>
+  <text x="95" y="573" font-family="Arial" font-size="12" text-anchor="start">AWS AI Services (Bedrock)</text>
+</svg>

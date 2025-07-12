@@ -1,0 +1,60 @@
+# Network Diagnostics Architecture
+
+## Components
+
+1. **CloudFront Distribution**
+   - Delivers web application to users
+   - Provides HTTPS security
+   - Caches content for better performance
+
+2. **S3 Bucket (WebApp)**
+   - Hosts the static web application files (HTML, CSS, JavaScript)
+   - Configured for website hosting
+
+3. **API Gateway**
+   - Provides REST API endpoints
+   - Handles CORS for cross-origin requests
+   - Routes requests to Lambda function
+
+4. **Lambda Function (Bedrock Client)**
+   - Analyzes network configurations using Amazon Bedrock
+   - Stores results in DynamoDB and S3
+   - Processes user input from the web application
+
+5. **DynamoDB**
+   - Stores network configurations and analysis results
+   - Provides fast, consistent access to data
+   - Uses id as partition key
+
+6. **S3 Bucket (Results)**
+   - Stores detailed analysis results and diagrams
+   - Provides persistent storage for larger objects
+
+7. **Amazon Bedrock**
+   - AI service used for analyzing network configurations
+   - Uses Claude 3 Sonnet model for analysis
+
+## Data Flow
+
+1. User accesses the web application via CloudFront
+2. Web application loads from S3 bucket
+3. User submits network configuration via web interface
+4. Web application sends API request to API Gateway
+5. API Gateway forwards request to Lambda function
+6. Lambda function invokes Amazon Bedrock for analysis
+7. Lambda function stores results in DynamoDB and S3
+8. Results are returned to the web application via API Gateway
+9. Web application displays analysis results to the user
+
+## Security
+
+- CloudFront provides HTTPS for secure communication
+- API Gateway handles authentication and authorization
+- Lambda function has specific IAM permissions for Bedrock, DynamoDB, and S3
+- S3 buckets are configured with appropriate access policies
+
+## Deployment
+
+- All resources are defined using AWS CDK
+- Infrastructure as Code enables consistent deployments
+- Resources can be easily updated or removed as needed
