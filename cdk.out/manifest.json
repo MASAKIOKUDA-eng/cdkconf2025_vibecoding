@@ -1,0 +1,892 @@
+{
+  "version": "45.0.0",
+  "artifacts": {
+    "NetworkDiagnosticsStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "NetworkDiagnosticsStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "NetworkDiagnosticsStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://952307266115/ap-northeast-1",
+      "properties": {
+        "templateFile": "NetworkDiagnosticsStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-deploy-role-952307266115-ap-northeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-cfn-exec-role-952307266115-ap-northeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-952307266115-ap-northeast-1/71820a89a4a27401bd1cc71f5f212ec27f3aa3194a7178d226937ee2ff3c2327.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "NetworkDiagnosticsStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-lookup-role-952307266115-ap-northeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "NetworkDiagnosticsStack.assets"
+      ],
+      "metadata": {
+        "/NetworkDiagnosticsStack/ResultsBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "cors": [
+                {
+                  "allowedMethods": [
+                    "GET",
+                    "PUT",
+                    "POST"
+                  ],
+                  "allowedOrigins": "*",
+                  "allowedHeaders": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addCorsRule": [
+                {
+                  "allowedMethods": [
+                    "GET",
+                    "PUT",
+                    "POST"
+                  ],
+                  "allowedOrigins": "*",
+                  "allowedHeaders": "*"
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/ResultsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResultsBucketA95A2103"
+          }
+        ],
+        "/NetworkDiagnosticsStack/ResultsBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/ResultsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResultsBucketPolicy5EF3AFA7"
+          }
+        ],
+        "/NetworkDiagnosticsStack/ResultsBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/ResultsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResultsBucketAutoDeleteObjectsCustomResourceA308482A"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "websiteIndexDocument": "*",
+              "publicReadAccess": true,
+              "blockPublicAccess": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebAppBucket8F6FA179"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebAppBucketPolicy542A2969"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebAppBucketAutoDeleteObjectsCustomResourceEF114EAA"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebDistribution": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultBehavior": {
+                "origin": "*",
+                "viewerProtocolPolicy": "redirect-to-https"
+              }
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebDistribution59C46482"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkTable": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "partitionKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "billingMode": "PAY_PER_REQUEST",
+              "removalPolicy": "destroy"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkTable10EDB904"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkTable/ScalingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "runtime": "*",
+              "handler": "*",
+              "code": "*",
+              "timeout": "*",
+              "environment": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AnalyzeNetworkFunctionServiceRole2CF8116B"
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AnalyzeNetworkFunctionServiceRoleDefaultPolicy9E81C585"
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AnalyzeNetworkFunction6D6980AC"
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/AnalyzeNetworkFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AnalyzeNetworkFunctionLogGroupC95225B0"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultCorsPreflightOptions": {
+                "allowOrigins": "*",
+                "allowMethods": "*"
+              }
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApi48F06DA5"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApiDeploymentAA82D8EC5b6629de4c2ec3fe501b88e6c68afda1"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApiDeploymentStageprod68C155F4"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApiEndpoint98CC28E6"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/OPTIONS": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "authorizer": {
+                  "authorizerId": "*",
+                  "authorizationType": "*"
+                },
+                "apiKeyRequired": false,
+                "authorizationType": "*",
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApiOPTIONSAAFB03BA"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "pathPart": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApianalyze209F33FC"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/OPTIONS": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "authorizer": {
+                  "authorizerId": "*",
+                  "authorizationType": "*"
+                },
+                "apiKeyRequired": false,
+                "authorizationType": "*",
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApianalyzeOPTIONS871A1B29"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/ApiPermission.NetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1.POST..analyze": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApianalyzePOSTApiPermissionNetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1POSTanalyze9A2AD04C"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/ApiPermission.Test.NetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1.POST..analyze": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApianalyzePOSTApiPermissionTestNetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1POSTanalyze20D2BDC9"
+          }
+        ],
+        "/NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkDiagnosticApianalyzePOST460E730C"
+          }
+        ],
+        "/NetworkDiagnosticsStack/ApiUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiUrl"
+          }
+        ],
+        "/NetworkDiagnosticsStack/WebAppUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebAppUrl"
+          }
+        ],
+        "/NetworkDiagnosticsStack/DeployWebsite/AwsCliLayer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {}
+          }
+        ],
+        "/NetworkDiagnosticsStack/DeployWebsite/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployWebsiteAwsCliLayer17DBC421"
+          }
+        ],
+        "/NetworkDiagnosticsStack/DeployWebsite/CustomResourceHandler": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "uuid": "*",
+              "layers": [
+                "*"
+              ],
+              "environment": "*",
+              "lambdaPurpose": "*",
+              "timeout": "*",
+              "role": "*",
+              "memorySize": "*",
+              "ephemeralStorageSize": "*",
+              "vpc": "*",
+              "vpcSubnets": "*",
+              "filesystem": "*",
+              "logGroup": "*",
+              "code": "*",
+              "handler": "*",
+              "runtime": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMetadata": [
+                "*",
+                true
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMetadata": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/DeployWebsite/CustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/DeployWebsite/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployWebsiteCustomResourceD116527B"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "layers": [
+                "*"
+              ],
+              "environment": "*",
+              "timeout": "*",
+              "role": "*",
+              "memorySize": "*",
+              "ephemeralStorageSize": "*",
+              "vpc": "*",
+              "vpcSubnets": "*",
+              "filesystem": "*",
+              "logGroup": "*",
+              "code": "*",
+              "handler": "*",
+              "runtime": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLayers": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-singleton",
+            "data": true
+          },
+          {
+            "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+            "data": 2
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CLogGroup817B64E9"
+          }
+        ],
+        "/NetworkDiagnosticsStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/NetworkDiagnosticsStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/NetworkDiagnosticsStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "NetworkDiagnosticsStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1020.2"
+}

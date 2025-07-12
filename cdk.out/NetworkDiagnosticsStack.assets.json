@@ -1,0 +1,96 @@
+{
+  "version": "45.0.0",
+  "files": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    },
+    "e06974fb5fdf1a862eca2363781a3d9e6b0bca50cfa82adff486ec969c4e794a": {
+      "displayName": "AnalyzeNetworkFunction/Code",
+      "source": {
+        "path": "asset.e06974fb5fdf1a862eca2363781a3d9e6b0bca50cfa82adff486ec969c4e794a",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "e06974fb5fdf1a862eca2363781a3d9e6b0bca50cfa82adff486ec969c4e794a.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    },
+    "c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535": {
+      "displayName": "DeployWebsite/AwsCliLayer/Code",
+      "source": {
+        "path": "asset.c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip",
+        "packaging": "file"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    },
+    "9a1fcb4a7ecba81ad70e9d3fb241f6794497da945dae5f25924e4dd002b65f2d": {
+      "displayName": "Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code",
+      "source": {
+        "path": "asset.9a1fcb4a7ecba81ad70e9d3fb241f6794497da945dae5f25924e4dd002b65f2d",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "9a1fcb4a7ecba81ad70e9d3fb241f6794497da945dae5f25924e4dd002b65f2d.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    },
+    "1fece60cb16141b5e4b0b4acf88f07e5beb02e6fb124c90425c47b62c79b0f0a": {
+      "displayName": "DeployWebsite/Asset1",
+      "source": {
+        "path": "asset.1fece60cb16141b5e4b0b4acf88f07e5beb02e6fb124c90425c47b62c79b0f0a",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "1fece60cb16141b5e4b0b4acf88f07e5beb02e6fb124c90425c47b62c79b0f0a.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    },
+    "71820a89a4a27401bd1cc71f5f212ec27f3aa3194a7178d226937ee2ff3c2327": {
+      "displayName": "NetworkDiagnosticsStack Template",
+      "source": {
+        "path": "NetworkDiagnosticsStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "952307266115-ap-northeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+          "objectKey": "71820a89a4a27401bd1cc71f5f212ec27f3aa3194a7178d226937ee2ff3c2327.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::952307266115:role/cdk-hnb659fds-file-publishing-role-952307266115-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

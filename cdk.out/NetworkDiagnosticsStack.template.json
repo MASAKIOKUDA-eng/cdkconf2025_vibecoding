@@ -1,0 +1,1129 @@
+{
+ "Description": "ネットワーク診断君 - ネットワーク構成を分析し、改善点を提案するアプリケーション",
+ "Resources": {
+  "ResultsBucketA95A2103": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/ResultsBucket/Resource"
+   }
+  },
+  "ResultsBucketPolicy5EF3AFA7": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ResultsBucketA95A2103"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ResultsBucketA95A2103",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ResultsBucketA95A2103",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/ResultsBucket/Policy/Resource"
+   }
+  },
+  "ResultsBucketAutoDeleteObjectsCustomResourceA308482A": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "ResultsBucketA95A2103"
+    }
+   },
+   "DependsOn": [
+    "ResultsBucketPolicy5EF3AFA7"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/ResultsBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "ResultsBucketA95A2103"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "WebAppBucket8F6FA179": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "BlockPublicPolicy": false,
+     "IgnorePublicAcls": false,
+     "RestrictPublicBuckets": false
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "aws-cdk:cr-owned:373ec954",
+      "Value": "true"
+     }
+    ],
+    "WebsiteConfiguration": {
+     "IndexDocument": "index.html"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/WebAppBucket/Resource"
+   }
+  },
+  "WebAppBucketPolicy542A2969": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "WebAppBucket8F6FA179"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "WebAppBucket8F6FA179",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebAppBucket8F6FA179",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebAppBucket8F6FA179",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/WebAppBucket/Policy/Resource"
+   }
+  },
+  "WebAppBucketAutoDeleteObjectsCustomResourceEF114EAA": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "WebAppBucket8F6FA179"
+    }
+   },
+   "DependsOn": [
+    "WebAppBucketPolicy542A2969"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/WebAppBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "WebDistribution59C46482": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "NetworkDiagnosticsStackWebDistributionOrigin1341064AC",
+      "ViewerProtocolPolicy": "redirect-to-https"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "CustomOriginConfig": {
+        "OriginProtocolPolicy": "http-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": {
+        "Fn::Select": [
+         2,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::GetAtt": [
+             "WebAppBucket8F6FA179",
+             "WebsiteURL"
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "Id": "NetworkDiagnosticsStackWebDistributionOrigin1341064AC"
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/WebDistribution/Resource"
+   }
+  },
+  "NetworkTable10EDB904": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkTable/Resource"
+   }
+  },
+  "AnalyzeNetworkFunctionServiceRole2CF8116B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/Resource"
+   }
+  },
+  "AnalyzeNetworkFunctionServiceRoleDefaultPolicy9E81C585": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "NetworkTable10EDB904",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ResultsBucketA95A2103",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ResultsBucketA95A2103",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AnalyzeNetworkFunctionServiceRoleDefaultPolicy9E81C585",
+    "Roles": [
+     {
+      "Ref": "AnalyzeNetworkFunctionServiceRole2CF8116B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/AnalyzeNetworkFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AnalyzeNetworkFunction6D6980AC": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+     "S3Key": "e06974fb5fdf1a862eca2363781a3d9e6b0bca50cfa82adff486ec969c4e794a.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "NETWORK_TABLE": {
+       "Ref": "NetworkTable10EDB904"
+      },
+      "RESULTS_BUCKET": {
+       "Ref": "ResultsBucketA95A2103"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "AnalyzeNetworkFunctionServiceRole2CF8116B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "AnalyzeNetworkFunctionServiceRoleDefaultPolicy9E81C585",
+    "AnalyzeNetworkFunctionServiceRole2CF8116B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/AnalyzeNetworkFunction/Resource",
+    "aws:asset:path": "asset.e06974fb5fdf1a862eca2363781a3d9e6b0bca50cfa82adff486ec969c4e794a",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AnalyzeNetworkFunctionLogGroupC95225B0": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "AnalyzeNetworkFunction6D6980AC"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/AnalyzeNetworkFunction/LogGroup/Resource"
+   }
+  },
+  "NetworkDiagnosticApi48F06DA5": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "NetworkDiagnosticApi"
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Resource"
+   }
+  },
+  "NetworkDiagnosticApiDeploymentAA82D8EC5b6629de4c2ec3fe501b88e6c68afda1": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    }
+   },
+   "DependsOn": [
+    "NetworkDiagnosticApianalyzeOPTIONS871A1B29",
+    "NetworkDiagnosticApianalyzePOST460E730C",
+    "NetworkDiagnosticApianalyze209F33FC",
+    "NetworkDiagnosticApiOPTIONSAAFB03BA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "NetworkDiagnosticApiDeploymentStageprod68C155F4": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "NetworkDiagnosticApiDeploymentAA82D8EC5b6629de4c2ec3fe501b88e6c68afda1"
+    },
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "NetworkDiagnosticApiOPTIONSAAFB03BA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "NetworkDiagnosticApi48F06DA5",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/OPTIONS/Resource"
+   }
+  },
+  "NetworkDiagnosticApianalyze209F33FC": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "NetworkDiagnosticApi48F06DA5",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "analyze",
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/Resource"
+   }
+  },
+  "NetworkDiagnosticApianalyzeOPTIONS871A1B29": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "NetworkDiagnosticApianalyze209F33FC"
+    },
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/OPTIONS/Resource"
+   }
+  },
+  "NetworkDiagnosticApianalyzePOSTApiPermissionNetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1POSTanalyze9A2AD04C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AnalyzeNetworkFunction6D6980AC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:ap-northeast-1:952307266115:",
+       {
+        "Ref": "NetworkDiagnosticApi48F06DA5"
+       },
+       "/",
+       {
+        "Ref": "NetworkDiagnosticApiDeploymentStageprod68C155F4"
+       },
+       "/POST/analyze"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/ApiPermission.NetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1.POST..analyze"
+   }
+  },
+  "NetworkDiagnosticApianalyzePOSTApiPermissionTestNetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1POSTanalyze20D2BDC9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AnalyzeNetworkFunction6D6980AC",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:ap-northeast-1:952307266115:",
+       {
+        "Ref": "NetworkDiagnosticApi48F06DA5"
+       },
+       "/test-invoke-stage/POST/analyze"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/ApiPermission.Test.NetworkDiagnosticsStackNetworkDiagnosticApi942ABBD1.POST..analyze"
+   }
+  },
+  "NetworkDiagnosticApianalyzePOST460E730C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AnalyzeNetworkFunction6D6980AC",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "NetworkDiagnosticApianalyze209F33FC"
+    },
+    "RestApiId": {
+     "Ref": "NetworkDiagnosticApi48F06DA5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/NetworkDiagnosticApi/Default/analyze/POST/Resource"
+   }
+  },
+  "DeployWebsiteAwsCliLayer17DBC421": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+     "S3Key": "c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/DeployWebsite/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "DeployWebsiteCustomResourceD116527B": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+      "Arn"
+     ]
+    },
+    "SourceBucketNames": [
+     "cdk-hnb659fds-assets-952307266115-ap-northeast-1"
+    ],
+    "SourceObjectKeys": [
+     "1fece60cb16141b5e4b0b4acf88f07e5beb02e6fb124c90425c47b62c79b0f0a.zip"
+    ],
+    "DestinationBucketName": {
+     "Ref": "WebAppBucket8F6FA179"
+    },
+    "Prune": true,
+    "DistributionId": {
+     "Ref": "WebDistribution59C46482"
+    },
+    "DistributionPaths": [
+     "/*"
+    ],
+    "OutputObjectKeys": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/DeployWebsite/CustomResource/Default"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+        "arn:aws:s3:::cdk-hnb659fds-assets-952307266115-ap-northeast-1/*"
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "WebAppBucket8F6FA179",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "WebAppBucket8F6FA179",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetInvalidation"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "Roles": [
+     {
+      "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-952307266115-ap-northeast-1",
+     "S3Key": "9a1fcb4a7ecba81ad70e9d3fb241f6794497da945dae5f25924e4dd002b65f2d.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+     }
+    },
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Ref": "DeployWebsiteAwsCliLayer17DBC421"
+     }
+    ],
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.11",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+    "aws:asset:path": "asset.9a1fcb4a7ecba81ad70e9d3fb241f6794497da945dae5f25924e4dd002b65f2d",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CLogGroup817B64E9": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/LogGroup/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+0XyW7jNvRbRscBrc7SwyA3J/FMg840qu0pUASBQYnPNhOKVLnYVQX/ex8XycraaYsuQHuRxLfvfHqTv3n1df7qBd2bScVuJ4KXebewtLolCFp15m3enbrqFuxVl2mo1Y6KQgletdlJxsBYrdqMZNRZdQ4CLFyWN1BZk51Y7YBkldL4jbxUCLUH9gnsVjEPyj7MlshZfA7Py8UyuyY91aXmGy6RKnuZDcBvgDLQEXi4PhCUydgZyp87AX+FDhIwL7Og6w/4vofScAsXksHP56pyNUib1DWuRDlz1DatKjADSylUdVsEZI8I3pKztYxpIPEV7UCfy3BMBt89jrgieeI9pQau0KlKKMfWWkmbd+cc3eGls1xJlMpgTZ2wp7ClO650dtJlKsQr2b/jsAddaGVVpY5B0cC4xhBMrJpsrW1MdohWjMUfCGslrRXDSlvSUgDqa6i23CO/hdYrQzwkVbZt/OfC56PkQnC5+aSYBxXTH1fFbL6az77/PFv4FD+VpGhEUHYggtYlo3n33skquaudtHzQuKWSCdDpVEVlwRSkUa7PIcgdx+ANWU0VORuDr8Yl9CxS0DYUngdePxR+X7lWoreqRqd1u+C/9ABotlCDpmJhlaYbGKF2TXX8WrhSgu07YM0FmNZYqBNAqM0HrVzzMA53AzQO3pfE4OPY05iZPhX+uwBdc2PSKRD/gPT+vMDcY58pOUqdc5z1Bv9WCGPmC6cbZR7P6b87rDjYKKOWppj6kXH9OCqG9kA4rfNurkKPUWNwBLHT0GCN5rLiDRU4ZpQbIhRpPMM0BLgfhDWV6DELjcUhTvQxrJ1qeXcwL1XRq+jb8apLWIv3y/ZCYivDgBsK5Fnk83Kfx/6H3Q9N5t0i6d7w3vbKlmoeqv6eDQ/BjOFigIWMDWXuqP1i8D+jNngfHT8Q83bVYZqxQfOpfxEGjVCtp8/j9Xg+APCuUBuTdx9Ty2LW++79jo5a8yEwqOzZDoQ2fING7WmL3Yh30rThx0vWrzCFhrXgm629bHzdGV+jYSV5ZEsZ1huvKKU2yiRH04N4U2neDHWM7A3vhwuOCy6P5GY8ZpYKLecVFRfsXnX9WXjcBQatBFO1gWBqDxqFLyAJuqacriAsLWGwR//DOhpR/fjEhSPiEoBLCxtNRwFQo+g6pNQ4wvXd00XP3YMC/zIuIWEYYBRxS5nDTw53HaReU2HgKXp/j3iT0I0GNafZYbBEnTk7jn6d0AXVWEN2tOYe5/tIyu8VQv4P1t8VrKF8I8NQv3HJHf0BULtF3eOC70nRjTNnrKoH3nSlh2t9THmPDvfxHcf/F98rJEw330O4NJEnJV062zibduJV2KBW+ONXCZ5P9+ZM8LCAxaaWGL38xny1e/0O/xrzdy9uDOeTtKfk8/j+FS4WdQlRDgAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "NetworkDiagnosticsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "NetworkDiagnosticApiEndpoint98CC28E6": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "NetworkDiagnosticApi48F06DA5"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "NetworkDiagnosticApiDeploymentStageprod68C155F4"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Description": "URL of the API Gateway endpoint",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "NetworkDiagnosticApi48F06DA5"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "NetworkDiagnosticApiDeploymentStageprod68C155F4"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "WebAppUrl": {
+   "Description": "URL of the web application",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::GetAtt": [
+        "WebDistribution59C46482",
+        "DomainName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

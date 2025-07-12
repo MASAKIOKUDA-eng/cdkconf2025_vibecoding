@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワーク診断君</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .header {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 2rem;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ネットワーク診断君</h1>
+            <p class="lead">ネットワーク構成を分析し、改善点を提案します</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        ネットワーク構成情報
+                    </div>
+                    <div class="card-body">
+                        <form id="networkForm">
+                            <div class="mb-3">
+                                <label for="networkConfig" class="form-label">ネットワーク構成（JSON形式）</label>
+                                <textarea class="form-control" id="networkConfig" rows="10" required></textarea>
+                                <div class="form-text">VPC、サブネット、セキュリティグループなどの構成情報をJSON形式で入力してください。</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">分析する</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="loading" class="loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>分析中です。しばらくお待ちください...</p>
+                </div>
+
+                <div id="resultSection" class="result-section">
+                    <h2>分析結果</h2>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">概要</div>
+                        <div class="card-body">
+                            <p id="overview"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">セキュリティの問題点</div>
+                                <div class="card-body">
+                                    <ul id="securityIssues"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">コスト最適化の提案</div>
+                                <div class="card-body">
+                                    <ul id="costOptimizations"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">パフォーマンス改善の提案</div>
+                                <div class="card-body">
+                                    <ul id="performanceImprovements"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">ベストプラクティス</div>
+                                <div class="card-body">
+                                    <ul id="bestPractices"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // サンプルデータを設定
+            const sampleData = {
+                "vpc": {
+                    "id": "vpc-12345",
+                    "cidr": "10.0.0.0/16",
+                    "region": "ap-northeast-1"
+                },
+                "subnets": [
+                    {
+                        "id": "subnet-1",
+                        "cidr": "10.0.1.0/24",
+                        "az": "ap-northeast-1a",
+                        "public": true
+                    },
+                    {
+                        "id": "subnet-2",
+                        "cidr": "10.0.2.0/24",
+                        "az": "ap-northeast-1c",
+                        "public": true
+                    },
+                    {
+                        "id": "subnet-3",
+                        "cidr": "10.0.3.0/24",
+                        "az": "ap-northeast-1a",
+                        "public": false
+                    },
+                    {
+                        "id": "subnet-4",
+                        "cidr": "10.0.4.0/24",
+                        "az": "ap-northeast-1c",
+                        "public": false
+                    }
+                ],
+                "securityGroups": [
+                    {
+                        "id": "sg-1",
+                        "name": "web-sg",
+                        "inboundRules": [
+                            {
+                                "protocol": "tcp",
+                                "port": 80,
+                                "source": "0.0.0.0/0"
+                            },
+                            {
+                                "protocol": "tcp",
+                                "port": 22,
+                                "source": "0.0.0.0/0"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "sg-2",
+                        "name": "db-sg",
+                        "inboundRules": [
+                            {
+                                "protocol": "tcp",
+                                "port": 3306,
+                                "source": "sg-1"
+                            }
+                        ]
+                    }
+                ],
+                "instances": [
+                    {
+                        "id": "i-1",
+                        "type": "t3.micro",
+                        "subnet": "subnet-1",
+                        "securityGroups": ["sg-1"]
+                    },
+                    {
+                        "id": "i-2",
+                        "type": "t3.micro",
+                        "subnet": "subnet-2",
+                        "securityGroups": ["sg-1"]
+                    },
+                    {
+                        "id": "i-3",
+                        "type": "t3.large",
+                        "subnet": "subnet-3",
+                        "securityGroups": ["sg-2"]
+                    }
+                ]
+            };
+            
+            document.getElementById('networkConfig').value = JSON.stringify(sampleData, null, 2);
+            
+            // フォーム送信処理
+            document.getElementById('networkForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const networkConfig = document.getElementById('networkConfig').value;
+                
+                try {
+                    // 入力値のバリデーション
+                    JSON.parse(networkConfig);
+                    
+                    // ローディング表示
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('resultSection').style.display = 'none';
+                    
+                    // APIエンドポイントは実際のデプロイ後に更新する必要があります
+                    const apiUrl = 'API_ENDPOINT_URL/analyze';
+                    
+                    // 実際のAPIが利用可能になったらコメントを外す
+                    /*
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            networkConfig: JSON.parse(networkConfig)
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    displayResults(data.analysisResult);
+                    */
+                    
+                    // デモ用のモックレスポンス
+                    setTimeout(() => {
+                        const mockResponse = {
+                            "analysis": {
+                                "overview": "このネットワーク構成は基本的なウェブアプリケーション向けの構成ですが、いくつかのセキュリティ上の問題と最適化の余地があります。",
+                                "securityIssues": [
+                                    "SSH（ポート22）が全インターネットに公開されています",
+                                    "データベースインスタンスが過剰なスペックになっている可能性があります",
+                                    "セキュリティグループのルールが過度に寛容です"
+                                ],
+                                "costOptimizations": [
+                                    "t3.largeインスタンスをt3.smallに変更することでコストを削減できる可能性があります",
+                                    "リザーブドインスタンスの購入を検討してください",
+                                    "未使用のEBSボリュームがないか確認してください"
+                                ],
+                                "performanceImprovements": [
+                                    "複数のAZにデータベースをレプリケートして可用性を向上させる",
+                                    "ElastiCacheを導入してデータベースの負荷を軽減する",
+                                    "Auto Scalingを設定して負荷に応じてインスタンス数を調整する"
+                                ],
+                                "bestPractices": [
+                                    "バスティオンホストを使用してSSHアクセスを制限する",
+                                    "セキュリティグループのルールを最小権限の原則に従って設定する",
+                                    "プライベートサブネットのリソースにはNATゲートウェイ経由でインターネットアクセスを提供する",
+                                    "タグ付けを徹底して管理を容易にする"
+                                ]
+                            },
+                            "diagramSuggestions": {
+                                "components": ["VPC", "Public Subnets", "Private Subnets", "Internet Gateway", "NAT Gateway", "EC2 Instances", "RDS"],
+                                "connections": ["Internet Gateway to Public Subnets", "NAT Gateway to Private Subnets", "EC2 to RDS"],
+                                "highlights": ["Security Group Rules", "SSH Access"]
+                            }
+                        };
+                        
+                        displayResults(mockResponse);
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('resultSection').style.display = 'block';
+                    }, 2000);
+                    
+                } catch (error) {
+                    alert('JSONの形式が正しくありません。');
+                    console.error(error);
+                    document.getElementById('loading').style.display = 'none';
+                }
+            });
+            
+            // 結果表示関数
+            function displayResults(results) {
+                document.getElementById('overview').textContent = results.analysis.overview;
+                
+                const securityList = document.getElementById('securityIssues');
+                securityList.innerHTML = '';
+                results.analysis.securityIssues.forEach(issue => {
+                    const li = document.createElement('li');
+                    li.textContent = issue;
+                    securityList.appendChild(li);
+                });
+                
+                const costList = document.getElementById('costOptimizations');
+                costList.innerHTML = '';
+                results.analysis.costOptimizations.forEach(opt => {
+                    const li = document.createElement('li');
+                    li.textContent = opt;
+                    costList.appendChild(li);
+                });
+                
+                const perfList = document.getElementById('performanceImprovements');
+                perfList.innerHTML = '';
+                results.analysis.performanceImprovements.forEach(imp => {
+                    const li = document.createElement('li');
+                    li.textContent = imp;
+                    perfList.appendChild(li);
+                });
+                
+                const bpList = document.getElementById('bestPractices');
+                bpList.innerHTML = '';
+                results.analysis.bestPractices.forEach(bp => {
+                    const li = document.createElement('li');
+                    li.textContent = bp;
+                    bpList.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
